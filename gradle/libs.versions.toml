@@ -12,6 +12,7 @@ lifecycleRuntimeKtx = "2.8.3"
 activityCompose = "1.9.0"
 composeBom = "2024.06.00"
 coroutines-core = "1.8.1"
+ksp = "2.0.20-1.0.24"
 kotlinx-coroutines = "1.8.1"
 kotlinx-serialization-json = "1.7.1"
 loggingInterceptor = "4.12.0"
@@ -24,6 +25,7 @@ appcompat = "1.7.0"
 kapt = "2.0.0"
 kotlinx-immutable = "0.3.7"
 material = "1.12.0"
+roomRuntime = "2.6.1"
 runtimeTracing = "1.0.0-beta01"
 uiGraphicsAndroid = "1.6.8"
 foundationAndroid = "1.6.8"
@@ -41,6 +43,9 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 androidx-runtime-tracing = { module = "androidx.compose.runtime:runtime-tracing", version.ref = "runtimeTracing" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "daggerAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "daggerAndroid" }
@@ -96,4 +101,5 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 jetbrains-kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
