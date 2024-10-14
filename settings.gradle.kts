@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "NotesShiftLabYasunov"
 include(":app")
- 
+include(":core:designsystem")
