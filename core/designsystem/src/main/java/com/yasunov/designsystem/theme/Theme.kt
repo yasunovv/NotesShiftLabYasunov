@@ -39,7 +39,7 @@ fun ProvideNotesShiftAppYasunovColors(
 }
 
 @Composable
-fun ShiftAppInternTheme(
+fun ShiftAppNotesTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {

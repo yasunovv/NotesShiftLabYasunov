@@ -11,7 +11,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.yasunov.designsystem.R
 import com.yasunov.designsystem.theme.NotesShiftAppYasunov
-import com.yasunov.designsystem.theme.ShiftAppInternTheme
+import com.yasunov.designsystem.theme.ShiftAppNotesTheme
 import com.yasunov.designsystem.theme.Typography
 
 @Composable
@@ -42,7 +42,7 @@ fun ShiftButton(
 @Preview
 @Composable
 private fun ShiftButtonPreview() {
-    ShiftAppInternTheme {
+    ShiftAppNotesTheme {
         ShiftButton(onClick = {}) {
             Text("Оформить заказ", style = Typography.body1)
         }

@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.yasunov.designsystem.theme.ShiftAppNotesTheme
+import com.yasunov.notesshiftlabyasunov.ui.ShiftNotesApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,7 +16,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         hideAppBarAndControls()
         setContent {
-
+            ShiftAppNotesTheme {
+                ShiftNotesApp()
+            }
         }
     }
 
