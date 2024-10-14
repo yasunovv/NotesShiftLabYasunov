@@ -15,5 +15,5 @@ data class NoteEntity(
     @ColumnInfo(name = "uri_picture")
     val uriPicture: String,
     @ColumnInfo(name = "date_of_create")
-    val dateOfCreation: Int,
+    val dateOfCreation: Long,
 )
