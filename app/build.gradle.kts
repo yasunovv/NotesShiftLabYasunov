@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.com.google.devtools.ksp)
+    alias(libs.plugins.jetbrains.kotlinx.serialization)
 }
 
 android {
@@ -78,5 +79,6 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.hilt.android.v252)
     annotationProcessor(libs.hilt.compiler)
+    implementation(libs.converter.kotlinx.serialization)
     implementation(project(":core:designsystem"))
 }

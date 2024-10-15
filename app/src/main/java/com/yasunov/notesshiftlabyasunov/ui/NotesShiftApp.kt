@@ -6,9 +6,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.yasunov.designsystem.component.ShiftScaffold
+import kotlinx.serialization.Serializable
 
 // todo разнести по фичам
+@Serializable
 data object MainScreenDest
+
+@Serializable
 data object EditNoteDest
 
 @Composable

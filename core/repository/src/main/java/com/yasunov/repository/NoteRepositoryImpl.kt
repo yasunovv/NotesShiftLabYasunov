@@ -1,5 +1,6 @@
 package com.yasunov.repository
 
+import android.util.Log
 import com.yasunov.database.dao.NoteDao
 import com.yasunov.repository.model.NoteModel
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,9 @@ import javax.inject.Singleton
 class NoteRepositoryImpl(
     @Inject private val noteDao: NoteDao,
 ) : NoteRepository {
+    init {
+        Log.e("NoteRepository", "HELLO")
+    }
     override suspend fun insertNote(noteModel: NoteModel) =
         noteDao.insertNote(note = noteModelToNoteEntity(noteModel = noteModel))
 
