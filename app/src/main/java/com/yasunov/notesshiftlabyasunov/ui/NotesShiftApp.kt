@@ -6,11 +6,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.yasunov.designsystem.component.ShiftScaffold
+import com.yasunov.notesshiftlabyasunov.screen.MainScreen
+import com.yasunov.notesshiftlabyasunov.screen.MainScreenDest
 import kotlinx.serialization.Serializable
 
 // todo разнести по фичам
-@Serializable
-data object MainScreenDest
+
 
 @Serializable
 data object EditNoteDest
@@ -23,7 +24,7 @@ fun ShiftNotesApp(
     ShiftScaffold { _ ->
         NavHost(navController = navController, startDestination = MainScreenDest) {
             composable<MainScreenDest> {
-
+                MainScreen()
             }
             composable<EditNoteDest> { backStackEntry ->
 

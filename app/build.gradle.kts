@@ -2,8 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.com.google.devtools.ksp)
+
     alias(libs.plugins.jetbrains.kotlinx.serialization)
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -44,6 +46,7 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
+
     }
     packaging {
         resources {
@@ -51,7 +54,9 @@ android {
         }
     }
 }
-
+hilt {
+    enableAggregatingTask = true
+}
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.runtime)
@@ -68,17 +73,19 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    implementation(project(":core:database"))
-    implementation(project(":core:repository"))
-    testImplementation(libs.junit)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.hilt.android.v252)
-    annotationProcessor(libs.hilt.compiler)
     implementation(libs.converter.kotlinx.serialization)
+
+
+
+
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.android)
+
     implementation(project(":core:designsystem"))
+    implementation(project(":core:database"))
+    implementation(project(":core:repository"))
 }

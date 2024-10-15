@@ -10,14 +10,18 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [RepositoryBindModule::class])
 @InstallIn(SingletonComponent::class)
-abstract class RepositoryBindModule {
+object RepositoryModule {
     @Singleton
     @Provides
     fun provideNoteRepositoryImpl(noteDao: NoteDao) = NoteRepositoryImpl(noteDao = noteDao)
 
-    @Binds
-    abstract fun bindRepository(repository: NoteRepositoryImpl): NoteRepository
 }
 
+@Module
+@InstallIn(SingletonComponent::class)
+interface RepositoryBindModule {
+    @Binds
+    fun bindNoteRepository(repositoryImpl: NoteRepositoryImpl): NoteRepository
+}

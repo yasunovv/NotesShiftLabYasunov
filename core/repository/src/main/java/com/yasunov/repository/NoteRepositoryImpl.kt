@@ -6,11 +6,9 @@ import com.yasunov.repository.model.NoteModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class NoteRepositoryImpl(
-    @Inject private val noteDao: NoteDao,
+class NoteRepositoryImpl @Inject constructor(
+    private val noteDao: NoteDao,
 ) : NoteRepository {
     init {
         Log.e("NoteRepository", "HELLO")

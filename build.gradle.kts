@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
     alias(libs.plugins.com.google.dagger.hilt.android) apply false
     alias(libs.plugins.jetbrains.kotlinx.serialization) apply false
+    kotlin("kapt") version "2.0.21" apply false
 
 }
 buildscript {
