@@ -15,5 +15,4 @@ object DatabaseModule {
     @Singleton
     fun provideNoteDatabase(context: Context): NoteDatabase =
         NoteDatabase.getDatabase(context = context)
-
 }
