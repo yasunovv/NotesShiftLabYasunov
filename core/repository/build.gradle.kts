@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.com.google.devtools.ksp)
 }
 
 android {
@@ -33,7 +34,9 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.hilt.android.v252)
+    annotationProcessor(libs.hilt.compiler)
     implementation(libs.kotlinx.coroutines.android)
     implementation(project(":core:database"))
 }

@@ -6,7 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.yasunov.database.dao.NoteDao
 import com.yasunov.database.entity.NoteEntity
+import javax.inject.Singleton
 
+@Singleton
 @Database(entities = [NoteEntity::class], version = 1, exportSchema = false)
 abstract class NoteDatabase : RoomDatabase() {
 

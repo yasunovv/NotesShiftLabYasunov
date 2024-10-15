@@ -4,9 +4,12 @@ import com.yasunov.database.dao.NoteDao
 import com.yasunov.repository.model.NoteModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
+import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class NoteRepositoryImpl(
-    private val noteDao: NoteDao,
+    @Inject private val noteDao: NoteDao,
 ) : NoteRepository {
     override suspend fun insertNote(noteModel: NoteModel) =
         noteDao.insertNote(note = noteModelToNoteEntity(noteModel = noteModel))
