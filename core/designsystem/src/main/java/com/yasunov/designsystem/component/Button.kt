@@ -7,9 +7,8 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.yasunov.designsystem.R
+import androidx.compose.ui.unit.dp
 import com.yasunov.designsystem.theme.NotesShiftAppYasunov
 import com.yasunov.designsystem.theme.ShiftAppNotesTheme
 import com.yasunov.designsystem.theme.Typography
@@ -19,12 +18,10 @@ fun ShiftButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-
+    contentPadding: PaddingValues = PaddingValues(horizontal = 32.dp, vertical = 16.dp),
     content: @Composable RowScope.() -> Unit,
 ) {
-    val dp32 = dimensionResource(id = R.dimen._32dp)
-    val dp16 = dimensionResource(id = R.dimen._16dp)
-    val contentPadding = PaddingValues(horizontal = dp32, vertical = dp16)
+
     Button(
         onClick = onClick,
         modifier = modifier,

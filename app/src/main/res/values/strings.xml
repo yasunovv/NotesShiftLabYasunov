@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">NotesShiftLabYasunov</string>
+    <string name="add_note">Добавить заметку</string>
+    <string name="back">Назад</string>
+    <string name="save">Сохранить</string>
+    <string name="title">Заголовок*</string>
+    <string name="please_add_title">Добавьте заголовок</string>
+    <string name="successful">Заметка добавлена</string>
 </resources>

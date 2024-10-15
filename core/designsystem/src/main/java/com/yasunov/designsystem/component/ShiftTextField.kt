@@ -12,32 +12,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.yasunov.designsystem.R
 import com.yasunov.designsystem.theme.NotesShiftAppYasunov
-import com.yasunov.designsystem.theme.Typography
 
 @Composable
 fun ShiftTextField(
     value: String,
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    maxLines: Int,
+    textStyle: TextStyle,
+    decorationBox: @Composable (innerTextField: @Composable () -> Unit) -> Unit
 ) {
     val dp1 = dimensionResource(id = R.dimen._1dp)
     val dp16 = dimensionResource(id = R.dimen._16dp)
     BasicTextField(
         value = value,
         onValueChange = onValueChange,
-        maxLines = 1,
+        maxLines = maxLines,
         cursorBrush = SolidColor(NotesShiftAppYasunov.colors.brand),
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = keyboardType,
             imeAction = ImeAction.Next
         ),
-        textStyle = Typography.body1,
-        modifier = modifier
+        decorationBox = decorationBox,
+        textStyle = textStyle,
+        modifier = Modifier
             .fillMaxWidth()
             .border(
                 width = dp1,
@@ -45,7 +49,8 @@ fun ShiftTextField(
                 shape = RoundedCornerShape(size = dp16)
             )
             .background(color = Color.White, shape = RoundedCornerShape(size = dp16))
-            .padding(all = dp16),
+            .padding(all = dp16)
+            .then(modifier),
     )
 
 }

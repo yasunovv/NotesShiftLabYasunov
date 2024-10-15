@@ -19,8 +19,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         hideAppBarAndControls()
         setContent {
+            ShiftAppNotesTheme {
 
-        ShiftAppNotesTheme {
                 ShiftNotesApp()
             }
         }

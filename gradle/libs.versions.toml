@@ -42,6 +42,7 @@ javax-inject = "1"
 uiautomator = "2.3.0"
 benchmarkMacroJunit4 = "1.2.4"
 jetbrainsKotlinJvmVersion = "2.0.0"
+composeMaterialVersion = "1.4.0"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 #dagger-android = { module = "com.google.dagger:dagger-android", version.ref = "daggerAndroid" }

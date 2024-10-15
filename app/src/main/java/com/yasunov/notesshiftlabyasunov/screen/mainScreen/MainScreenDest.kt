@@ -1,4 +1,4 @@
-package com.yasunov.notesshiftlabyasunov.screen
+package com.yasunov.notesshiftlabyasunov.screen.mainScreen
 
 import kotlinx.serialization.Serializable
 
