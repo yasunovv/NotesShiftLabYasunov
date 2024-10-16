@@ -21,7 +21,6 @@ fun ShiftButton(
     contentPadding: PaddingValues = PaddingValues(horizontal = 32.dp, vertical = 16.dp),
     content: @Composable RowScope.() -> Unit,
 ) {
-
     Button(
         onClick = onClick,
         modifier = modifier,

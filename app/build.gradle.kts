@@ -84,7 +84,8 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
-
+    implementation(libs.kotlinx.immutable)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx.v286)
     implementation(project(":core:designsystem"))
     implementation(project(":core:database"))
     implementation(project(":core:repository"))

@@ -19,6 +19,7 @@ coroutines-core = "1.9.0"
 ksp = "2.0.20-1.0.24"
 kotlinx-coroutines = "1.8.1"
 kotlinx-serialization-json = "1.7.1"
+lifecycleViewmodelKtx = "2.8.6"
 loggingInterceptor = "4.12.0"
 retrofit = "2.11.0"
 retrofitAdaptersResult = "1.0.11"
@@ -52,6 +53,7 @@ androidx-hilt-lifecycle-viewmodel = { module = "androidx.hilt:hilt-lifecycle-vie
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltNavigationCompose" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-viewmodel-ktx-v286 = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }

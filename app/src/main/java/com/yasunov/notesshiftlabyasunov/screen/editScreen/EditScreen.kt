@@ -25,12 +25,12 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.yasunov.designsystem.R
 import com.yasunov.designsystem.component.ShiftButton
 import com.yasunov.designsystem.component.ShiftScaffold
 import com.yasunov.designsystem.component.ShiftTextField
 import com.yasunov.designsystem.theme.NotesShiftAppYasunov
 import com.yasunov.designsystem.theme.Typography
+import com.yasunov.designsystem.R as RDesignSystem
 
 @Composable
 fun EditScreen(
@@ -41,11 +41,11 @@ fun EditScreen(
     val viewModel: EditScreenViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
 
-    val dp0 = dimensionResource(id = R.dimen._0dp)
-    val dp4 = dimensionResource(id = R.dimen._4dp)
-    val dp8 = dimensionResource(id = R.dimen._8dp)
-    val dp12 = dimensionResource(id = R.dimen._12dp)
-    val dp16 = dimensionResource(id = R.dimen._16dp)
+    val dp0 = dimensionResource(id = RDesignSystem.dimen._0dp)
+    val dp4 = dimensionResource(id = RDesignSystem.dimen._4dp)
+    val dp8 = dimensionResource(id = RDesignSystem.dimen._8dp)
+    val dp12 = dimensionResource(id = RDesignSystem.dimen._12dp)
+    val dp16 = dimensionResource(id = RDesignSystem.dimen._16dp)
     ShiftScaffold(
         topBar = {
             TopAppBar(
@@ -90,7 +90,9 @@ fun EditScreen(
                 backgroundColor = NotesShiftAppYasunov.colors.uiBackground,
                 contentColor = NotesShiftAppYasunov.colors.brand,
                 elevation = dp0,
-                modifier = modifier
+                modifier = Modifier
+                    .padding(top = dp16)
+                    .then(modifier)
             )
         }
     ) { _ ->

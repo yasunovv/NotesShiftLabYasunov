@@ -16,7 +16,7 @@ interface NoteDao {
     @Update
     suspend fun updateNote(note: NoteEntity)
 
-    @Query("SELECT * FROM `note_table` ORDER BY `date_of_create` ASC")
+    @Query("SELECT * FROM note_table")
     fun getAllNotesByDate(): Flow<List<NoteEntity>>
 
     @Query("DELETE FROM note_table WHERE id = :id")

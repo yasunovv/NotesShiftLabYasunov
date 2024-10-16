@@ -17,9 +17,11 @@ fun ShiftNotesApp(
 ) {
     val navController = rememberNavController()
     Box(modifier = modifier) {
-        NavHost(navController = navController, startDestination = EditNoteDest) {
+        NavHost(navController = navController, startDestination = MainScreenDest) {
             composable<MainScreenDest> {
-                MainScreen(onBackClick = {}, onSaveClick = { s: String, s1: String -> })
+                MainScreen(onNoteClicked = { id ->
+                    navController.navigate(EditNoteDest(id = id))
+                })
             }
             composable<EditNoteDest> { _ ->
                 EditScreen(onBackClick = { navController.popBackStack() }, noteAddedListener = {

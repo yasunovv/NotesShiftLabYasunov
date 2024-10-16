@@ -47,6 +47,7 @@ class EditScreenViewModel @Inject constructor(
         viewModelScope.launch {
             repository.insertNote(
                 noteModel = NoteModel(
+                    id = -1,
                     title = uiState.value.title,
                     body = uiState.value.text,
                     dateOfCreation = System.currentTimeMillis(),

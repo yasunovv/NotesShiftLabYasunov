@@ -5,18 +5,18 @@ import com.yasunov.repository.model.NoteModel
 
 internal fun noteModelToNoteEntity(noteModel: NoteModel): NoteEntity {
     return NoteEntity(
-        id = null,
+        id = noteModel.id,
         title = noteModel.title,
         body = noteModel.body,
         dateOfCreation = noteModel.dateOfCreation
     )
 }
 
-internal fun noteEntityToNoteModel(noteModel: NoteEntity): NoteModel {
+internal fun noteEntityToNoteModel(noteEntity: NoteEntity): NoteModel {
     return NoteModel(
-        id = noteModel.id,
-        title = noteModel.title,
-        body = noteModel.body,
-        dateOfCreation = noteModel.dateOfCreation
+        id = noteEntity.id!!,
+        title = noteEntity.title,
+        body = noteEntity.body,
+        dateOfCreation = noteEntity.dateOfCreation
     )
 }
