@@ -16,6 +16,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -36,11 +37,16 @@ import com.yasunov.designsystem.R as RDesignSystem
 fun EditScreen(
     onBackClick: () -> Unit,
     noteAddedListener: () -> Unit,
+    id: Int,
     modifier: Modifier = Modifier
 ) {
-    val viewModel: EditScreenViewModel = hiltViewModel()
+    val viewModel = hiltViewModel<EditScreenViewModel, EditScreenViewModel.Factory>(
+        creationCallback = { factory -> factory.create(id = id) }
+    )
+    LaunchedEffect(viewModel) {
+        viewModel.loadNote()
+    }
     val uiState by viewModel.uiState.collectAsState()
-
     val dp0 = dimensionResource(id = RDesignSystem.dimen._0dp)
     val dp4 = dimensionResource(id = RDesignSystem.dimen._4dp)
     val dp8 = dimensionResource(id = RDesignSystem.dimen._8dp)
@@ -55,7 +61,10 @@ fun EditScreen(
                     Text(text = addNoteStringResource, style = Typography.body2, color = Color.Gray)
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = {
+                        onBackClick()
+                        viewModel.addNote()
+                    }) {
                         val contentDescription =
                             stringResource(com.yasunov.notesshiftlabyasunov.R.string.back)
                         Icon(

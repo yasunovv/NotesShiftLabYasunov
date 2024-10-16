@@ -19,4 +19,7 @@ class NoteRepositoryImpl @Inject constructor(
         noteDao.getAllNotesByDate().map { it -> it.map { noteEntityToNoteModel(it) } }
 
     override suspend fun deleteById(id: Int) = noteDao.deleteById(id = id)
+    override fun getNoteById(id: Int): NoteModel =
+        noteEntityToNoteModel(noteDao.getNoteById(id = id))
+
 }

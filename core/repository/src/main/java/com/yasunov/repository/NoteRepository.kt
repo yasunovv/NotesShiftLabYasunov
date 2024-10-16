@@ -9,4 +9,5 @@ interface NoteRepository {
     suspend fun updateNote(noteModel: NoteModel)
     fun getAllNotesByDate(): Flow<List<NoteModel>>
     suspend fun deleteById(id: Int)
+    fun getNoteById(id: Int): NoteModel
 }

@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -36,18 +34,16 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.yasunov.designsystem.component.ShiftButton
 import com.yasunov.designsystem.component.ShiftScaffold
-import com.yasunov.designsystem.theme.NotesShiftAppYasunov
 import com.yasunov.designsystem.theme.NotesShiftAppYasunov.colors
 import com.yasunov.designsystem.theme.Typography
 import com.yasunov.notesshiftlabyasunov.R
 import com.yasunov.repository.model.NoteModel
 import java.text.SimpleDateFormat
-import java.util.Locale
 import com.yasunov.designsystem.R as RDesignSystem
 
 @Composable
@@ -57,10 +53,8 @@ fun MainScreen(
 ) {
     val viewModel: MainScreenViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
-
     val dp0 = dimensionResource(id = RDesignSystem.dimen._0dp)
     val dp4 = dimensionResource(id = RDesignSystem.dimen._4dp)
-
     val dp12 = dimensionResource(id = RDesignSystem.dimen._12dp)
     val dp16 = dimensionResource(id = RDesignSystem.dimen._16dp)
     val dp64 = dimensionResource(id = RDesignSystem.dimen._64dp)
@@ -86,125 +80,111 @@ fun MainScreen(
         }
     ) { _ ->
         when (uiState) {
-            is MainScreenUiState.NoNotes -> {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .fillMaxSize(),
-                ) {
-                    val image = painterResource(id = RDesignSystem.drawable.no_notes)
-                    Image(
-                        painter = image,
-                        contentDescription = "No notes",
-                        modifier = Modifier.size(dp256)
-                    )
-                    Text(
-                        text = stringResource(R.string.add_notes),
-                        style = Typography.body2,
-                        color = Color.Black,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .width(dp256)
-                            .padding(top = dp12, bottom = dp12)
-                    )
-
-                }
-            }
-
-            is MainScreenUiState.Loading -> {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .fillMaxSize(),
-                ) {
-                    CircularProgressIndicator(
-                        color = colors.brand,
-                        strokeWidth = dp4,
-                        backgroundColor = Color.Transparent,
-                        strokeCap = StrokeCap.Round,
-                        modifier = Modifier
-                            .size(dp64),
-                    )
-                }
-            }
-
-            is MainScreenUiState.Success -> {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentPadding = PaddingValues(dp16),
-                    verticalArrangement = Arrangement.spacedBy(dp12)
-                ) {
-                    items((uiState as MainScreenUiState.Success).list, key = { it.id!!.toInt() }) {
-                        Item(model = it, onClickCard = {
-                            onNoteClicked(it.id!!)
-                        })
-                    }
-
-                }
-            }
+            is MainScreenUiState.NoNotes -> NoNotes(dp256, dp12)
+            is MainScreenUiState.Loading -> Loading(dp4, dp64)
+            is MainScreenUiState.Success -> Success(dp16, dp12, uiState, onNoteClicked)
         }
-        Column {
-            Spacer(modifier = Modifier.weight(1f))
-            ShiftButton(
-                onClick = { onNoteClicked(-1) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = dp16, start = dp16, end = dp16)
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = stringResource(R.string.add_note),
-                        style = Typography.button,
-                        textAlign = TextAlign.Center,
-                        color = Color.White,
-
-                        )
-
-                }
-            }
-
-        }
+        AddNoteButton(onNoteClicked, dp16)
 
     }
 
 }
 
 @Composable
-fun NoteItem(model: NoteModel) {
-    val formattedDate =
-        SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(model.dateOfCreation)
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(max = 32.dp),
-        shape = RoundedCornerShape(8.dp),
-        elevation = 0.dp,
-    ) {
-        Column(
+private fun AddNoteButton(
+    onNoteClicked: (id: Int) -> Unit,
+    dp16: Dp
+) {
+    Column {
+        Spacer(modifier = Modifier.weight(1f))
+        ShiftButton(
+            onClick = { onNoteClicked(-1) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(bottom = dp16, start = dp16, end = dp16)
         ) {
-            Text(text = model.title, fontSize = 18.sp, color = Color.Black)
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(text = formattedDate, fontSize = 12.sp, color = Color.Gray)
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = if (model.body.length > 30) {
-                    model.body.take(30) + "..."
-                } else {
-                    model.body
-                },
-                fontSize = 14.sp,
-                color = Color.DarkGray,
-                maxLines = 3,
-            )
+            Box(
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.add_note),
+                    style = Typography.button,
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+
+                    )
+
+            }
         }
+
+    }
+}
+
+@Composable
+private fun Success(
+    dp16: Dp,
+    dp12: Dp,
+    uiState: MainScreenUiState,
+    onNoteClicked: (id: Int) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentPadding = PaddingValues(dp16),
+        verticalArrangement = Arrangement.spacedBy(dp12)
+    ) {
+        items((uiState as MainScreenUiState.Success).list, key = { it.id!!.toInt() }) {
+            Item(model = it, onClickCard = {
+                onNoteClicked(it.id!!)
+            })
+        }
+
+    }
+}
+
+@Composable
+private fun Loading(dp4: Dp, dp64: Dp) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
+        CircularProgressIndicator(
+            color = colors.brand,
+            strokeWidth = dp4,
+            backgroundColor = Color.Transparent,
+            strokeCap = StrokeCap.Round,
+            modifier = Modifier
+                .size(dp64),
+        )
+    }
+}
+
+@Composable
+private fun NoNotes(dp256: Dp, dp12: Dp) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
+        val image = painterResource(id = RDesignSystem.drawable.no_notes)
+        Image(
+            painter = image,
+            contentDescription = "No notes",
+            modifier = Modifier.size(dp256)
+        )
+        Text(
+            text = stringResource(R.string.add_notes),
+            style = Typography.body2,
+            color = Color.Black,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .width(dp256)
+                .padding(top = dp12, bottom = dp12)
+        )
+
     }
 }
 
@@ -220,7 +200,7 @@ fun Item(
     val dp12 = dimensionResource(id = RDesignSystem.dimen._12dp)
     val dp16 = dimensionResource(id = RDesignSystem.dimen._16dp)
     val sdf = SimpleDateFormat("yyyy-MM-dd")
-    val formattedDate = java.util.Date(1532358895L * 1000L)
+    val formattedDate = java.util.Date(model.dateOfCreation)
 //    val formattedDate =
 //        SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(model.dateOfCreation)
     Card(
@@ -244,15 +224,15 @@ fun Item(
         ) {
 
             Text(
-                text = model.title,
+                text = model.title.take(60),
                 textAlign = TextAlign.Left,
                 color = colors.titleText,
                 maxLines = 1,
                 style = Typography.h6,
             )
             Text(
-                text = if (model.body.length > 30) {
-                    model.body.take(30) + "..."
+                text = if (model.body.length > 120) {
+                    model.body.take(120) + "..."
                 } else {
                     model.body
                 },
@@ -261,7 +241,6 @@ fun Item(
                 maxLines = 3,
                 textAlign = TextAlign.Left,
                 style = Typography.body1,
-//                modifier = Modifier.padding(bottom = dp8),
             )
             Text(
                 text = sdf.format(formattedDate).toString(),
@@ -270,7 +249,6 @@ fun Item(
                 maxLines = 1,
                 textAlign = TextAlign.Left,
                 style = Typography.body1,
-//                modifier = Modifier.padding(bottom = dp8),
             )
 
 

@@ -1,6 +1,5 @@
 package com.yasunov.notesshiftlabyasunov.screen.mainScreen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yasunov.repository.NoteRepository
@@ -22,7 +21,6 @@ class MainScreenViewModel @Inject constructor(
     fun loadNotes() {
         viewModelScope.launch {
             repository.getAllNotesByDate().collect { result ->
-                Log.e("APP", "$result")
                 _uiState.update {
                     MainScreenUiState.Success(list = result.toImmutableList())
                 }

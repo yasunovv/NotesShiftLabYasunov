@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.yasunov.notesshiftlabyasunov.screen.editScreen.EditNoteDest
 import com.yasunov.notesshiftlabyasunov.screen.editScreen.EditScreen
 import com.yasunov.notesshiftlabyasunov.screen.mainScreen.MainScreen
@@ -23,10 +24,11 @@ fun ShiftNotesApp(
                     navController.navigate(EditNoteDest(id = id))
                 })
             }
-            composable<EditNoteDest> { _ ->
+            composable<EditNoteDest> { backStackEntry ->
+                val mainScreenDest: EditNoteDest = backStackEntry.toRoute()
                 EditScreen(onBackClick = { navController.popBackStack() }, noteAddedListener = {
                     navController.popBackStack()
-                })
+                }, id = mainScreenDest.id)
             }
         }
 

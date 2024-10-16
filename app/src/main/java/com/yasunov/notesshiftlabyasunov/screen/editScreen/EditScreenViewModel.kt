@@ -7,18 +7,22 @@ import androidx.lifecycle.viewModelScope
 import com.yasunov.notesshiftlabyasunov.R
 import com.yasunov.repository.NoteRepository
 import com.yasunov.repository.model.NoteModel
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class EditScreenViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = EditScreenViewModel.Factory::class)
+class EditScreenViewModel @AssistedInject constructor(
     private val repository: NoteRepository,
     @ApplicationContext private val context: Context,
+    @Assisted private val id: Int,
 ) : ViewModel() {
     private var _uiState: MutableStateFlow<EditScreenUiState> =
         MutableStateFlow(EditScreenUiState(title = "", text = ""))
@@ -44,16 +48,7 @@ class EditScreenViewModel @Inject constructor(
             }
             return
         }
-        viewModelScope.launch {
-            repository.insertNote(
-                noteModel = NoteModel(
-                    id = -1,
-                    title = uiState.value.title,
-                    body = uiState.value.text,
-                    dateOfCreation = System.currentTimeMillis(),
-                )
-            )
-        }
+        addNote()
         toast.apply {
             setText(context.getString(R.string.successful))
             show()
@@ -61,5 +56,37 @@ class EditScreenViewModel @Inject constructor(
 
 
     }
+
+    internal fun addNote() {
+        if (uiState.value.title.isEmpty()) return
+        viewModelScope.launch {
+            repository.insertNote(
+                noteModel = NoteModel(
+                    id = if (id != -1) id else null,
+                    title = uiState.value.title,
+                    body = uiState.value.text,
+                    dateOfCreation = System.currentTimeMillis(),
+                )
+            )
+        }
+    }
+
+    fun loadNote() {
+        if (id == -1) return
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.getNoteById(id = id)
+            _uiState.update {
+                EditScreenUiState(title = result.title, text = result.body)
+            }
+        }
+
+
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(id: Int): EditScreenViewModel
+    }
+
 
 }
