@@ -1,5 +1,6 @@
 Инструкция по сборке приложения:
 Скопировать проект с github через File->New->Project from Version Control... (нужно будет вставить ссылку с github)
+
 Другой способ - скачать архив из релизов (https://github.com/yasunovv/NotesShiftLabYasunov/releases), затем его распаковать и открыть через File->Open...
 
 Используемые используемые сторонние библиотеки:
