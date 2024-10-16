@@ -27,6 +27,19 @@ class MainScreenViewModel @Inject constructor(
             }
         }
     }
+    fun updateSelectedId(id: Int?) {
+        _uiState.update {
+            (uiState.value as MainScreenUiState.Success).copy(
+                selectedNote = id
+            )
+        }
+    }
+
+    fun deleteItemById() {
+        viewModelScope.launch {
+            repository.deleteById(id = (uiState.value as MainScreenUiState.Success).selectedNote!!)
+        }
+    }
 
 
 }

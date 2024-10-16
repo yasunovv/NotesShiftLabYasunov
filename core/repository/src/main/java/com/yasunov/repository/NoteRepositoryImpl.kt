@@ -12,8 +12,6 @@ class NoteRepositoryImpl @Inject constructor(
     override suspend fun insertNote(noteModel: NoteModel) =
         noteDao.insertNote(note = noteModelToNoteEntity(noteModel = noteModel))
 
-    override suspend fun updateNote(noteModel: NoteModel) =
-        noteDao.updateNote(note = noteModelToNoteEntity(noteModel = noteModel))
 
     override fun getAllNotesByDate(): Flow<List<NoteModel>> =
         noteDao.getAllNotesByDate().map { it -> it.map { noteEntityToNoteModel(it) } }

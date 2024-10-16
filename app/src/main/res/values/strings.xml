@@ -8,4 +8,8 @@
     <string name="please_add_title">Добавьте заголовок</string>
     <string name="successful">Заметка добавлена</string>
     <string name="add_notes">Создавайте, редактируйте и храните заметки</string>
+    <string name="title_deleting_note">Удаление заметки</string>
+    <string name="answer_to_delete_note">Вы точно хотите удалить заметку?</string>
+    <string name="no">Нет</string>
+    <string name="yes">Да</string>
 </resources>

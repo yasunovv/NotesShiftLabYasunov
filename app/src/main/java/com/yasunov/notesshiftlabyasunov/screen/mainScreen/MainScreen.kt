@@ -1,9 +1,10 @@
 package com.yasunov.notesshiftlabyasunov.screen.mainScreen
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,11 +26,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -54,14 +59,32 @@ fun MainScreen(
     val viewModel: MainScreenViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     val dp0 = dimensionResource(id = RDesignSystem.dimen._0dp)
-    val dp4 = dimensionResource(id = RDesignSystem.dimen._4dp)
-    val dp12 = dimensionResource(id = RDesignSystem.dimen._12dp)
     val dp16 = dimensionResource(id = RDesignSystem.dimen._16dp)
-    val dp64 = dimensionResource(id = RDesignSystem.dimen._64dp)
-    val dp256 = dimensionResource(id = RDesignSystem.dimen._256dp)
     LaunchedEffect(viewModel) {
         viewModel.loadNotes()
     }
+    var isDialogShown by remember {
+        mutableStateOf(false)
+    }
+    AnimatedVisibility(visible = isDialogShown) {
+        val dialogTitle = stringResource(R.string.title_deleting_note)
+        val dialogText = stringResource(R.string.answer_to_delete_note)
+        val no = stringResource(R.string.no)
+        val yes = stringResource(R.string.yes)
+        AlertDialog(
+            onDismissRequest = { isDialogShown = false },
+            onConfirmation = {
+                isDialogShown = false
+                viewModel.deleteItemById()
+                viewModel.updateSelectedId(null)
+
+            },
+            dialogTitle = dialogTitle,
+            dialogText = dialogText,
+            textButton = Pair(no, yes),
+        )
+    }
+
     ShiftScaffold(
         topBar = {
             TopAppBar(
@@ -80,9 +103,16 @@ fun MainScreen(
         }
     ) { _ ->
         when (uiState) {
-            is MainScreenUiState.NoNotes -> NoNotes(dp256, dp12)
-            is MainScreenUiState.Loading -> Loading(dp4, dp64)
-            is MainScreenUiState.Success -> Success(dp16, dp12, uiState, onNoteClicked)
+            is MainScreenUiState.NoNotes -> NoNotes()
+            is MainScreenUiState.Loading -> Loading()
+            is MainScreenUiState.Success -> Success(
+                uiState = uiState,
+                onNoteClicked = onNoteClicked,
+                onLongPressItem = {
+                    isDialogShown = true
+                    viewModel.updateSelectedId(it)
+                }
+            )
         }
         AddNoteButton(onNoteClicked, dp16)
 
@@ -120,13 +150,16 @@ private fun AddNoteButton(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun Success(
-    dp16: Dp,
-    dp12: Dp,
     uiState: MainScreenUiState,
-    onNoteClicked: (id: Int) -> Unit
+    onNoteClicked: (id: Int) -> Unit,
+    onLongPressItem: (Int) -> Unit,
 ) {
+    val dp12 = dimensionResource(id = RDesignSystem.dimen._12dp)
+    val dp16 = dimensionResource(id = RDesignSystem.dimen._16dp)
+    val haptics = LocalHapticFeedback.current
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -134,16 +167,27 @@ private fun Success(
         verticalArrangement = Arrangement.spacedBy(dp12)
     ) {
         items((uiState as MainScreenUiState.Success).list, key = { it.id!!.toInt() }) {
-            Item(model = it, onClickCard = {
-                onNoteClicked(it.id!!)
-            })
+            Item(
+                model = it,
+                modifier = Modifier
+                    .combinedClickable(
+                        onClick = { onNoteClicked(it.id!!) },
+                        onLongClick = {
+                            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                            onLongPressItem(it.id!!)
+                        },
+                    )
+            )
+
         }
 
     }
 }
 
 @Composable
-private fun Loading(dp4: Dp, dp64: Dp) {
+private fun Loading() {
+    val dp4 = dimensionResource(id = RDesignSystem.dimen._4dp)
+    val dp64 = dimensionResource(id = RDesignSystem.dimen._64dp)
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -162,7 +206,9 @@ private fun Loading(dp4: Dp, dp64: Dp) {
 }
 
 @Composable
-private fun NoNotes(dp256: Dp, dp12: Dp) {
+private fun NoNotes() {
+    val dp12 = dimensionResource(id = RDesignSystem.dimen._12dp)
+    val dp256 = dimensionResource(id = RDesignSystem.dimen._256dp)
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -192,30 +238,22 @@ private fun NoNotes(dp256: Dp, dp12: Dp) {
 @Composable
 fun Item(
     model: NoteModel,
-    onClickCard: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val dp4 = dimensionResource(id = RDesignSystem.dimen._4dp)
-    val dp8 = dimensionResource(id = RDesignSystem.dimen._8dp)
     val dp12 = dimensionResource(id = RDesignSystem.dimen._12dp)
     val dp16 = dimensionResource(id = RDesignSystem.dimen._16dp)
     val sdf = SimpleDateFormat("yyyy-MM-dd")
     val formattedDate = java.util.Date(model.dateOfCreation)
-//    val formattedDate =
-//        SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(model.dateOfCreation)
     Card(
         shape = RoundedCornerShape(dp16),
         backgroundColor = Color.White,
         contentColor = colors.bodyPrimaryText,
         border = null,
         elevation = dp4,
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = onClickCard
-            )
+            .then(modifier)
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(dp12),
